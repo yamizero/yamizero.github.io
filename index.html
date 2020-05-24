@@ -64,12 +64,16 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-java_printFunctionStack" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/05/23/hello-world/" class="article-date">
-  <time datetime="2020-05-23T15:05:15.870Z" itemprop="datePublished">2020-05-23</time>
+    <a href="/2018/01/05/java_printFunctionStack/" class="article-date">
+  <time datetime="2018-01-05T09:19:13.000Z" itemprop="datePublished">2018-01-05</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/coding/">coding</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -78,7 +82,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/23/hello-world/">Hello World</a>
+      <a class="article-title" href="/2018/01/05/java_printFunctionStack/">java打印当前反腐的堆栈信息</a>
     </h1>
   
 
@@ -86,24 +90,275 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+        <blockquote>
+<p>在调试的时候，可能会出现想看看有哪些方法调用了当前方法的。在本地可以用debug看堆栈信息，如果是线上的话就，只能打印这些信息了。 </p>
+</blockquote>
+<h5 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printTrack</span><span class="params">()</span></span>&#123;  </span><br><span class="line">    StackTraceElement[] st = Thread.currentThread().getStackTrace();  </span><br><span class="line">    <span class="keyword">if</span>(st==<span class="keyword">null</span>)&#123;  </span><br><span class="line">        System.out.println(<span class="string">"无堆栈..."</span>);  </span><br><span class="line">        <span class="keyword">return</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">    StringBuffer sbf =<span class="keyword">new</span> StringBuffer();  </span><br><span class="line">    <span class="keyword">for</span>(StackTraceElement e:st)&#123;  </span><br><span class="line">        <span class="keyword">if</span>(sbf.length()&gt;<span class="number">0</span>)&#123;  </span><br><span class="line">            sbf.append(<span class="string">" &lt;- "</span>);  </span><br><span class="line">            sbf.append(System.getProperty(<span class="string">"line.separator"</span>));  </span><br><span class="line">        &#125;  </span><br><span class="line">        sbf.append(java.text.MessageFormat.format(<span class="string">"&#123;0&#125;.&#123;1&#125;() &#123;2&#125;"</span>  </span><br><span class="line">                ,e.getClassName()  </span><br><span class="line">                ,e.getMethodName()  </span><br><span class="line">                ,e.getLineNumber()));  </span><br><span class="line">    &#125;  </span><br><span class="line">    System.out.println(sbf.toString());  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<h5 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h5><p>方法里面的就直接放到需要查看堆栈信息的方法中就可以，上面的是输出到控制台。如果要打印日志，就把里面的<code>sbf.toString()</code>放到<code>logger.debug()</code>之类的，在控制打印日志的级别，显示出来就可以了。</p>
+<h5 id="说明-再"><a href="#说明-再" class="headerlink" title="说明-再"></a>说明-再</h5><p>我出现这个问题是因为本地在调用支付宝<code>notify_url</code>和<code>return_url</code>时要用特殊的链接，不然就不走了。也是导致本地和线上不一致的原因。<br>给个链接吧<a href="http://blog.csdn.net/csethcrm/article/details/17995707" target="_blank" rel="noopener">支付宝接口使用文档说明 支付宝异步通知(notify_url)与return_url</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/23/hello-world/" data-id="ckajsdudc0000k8poa61b32st" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/01/05/java_printFunctionStack/" data-id="ckakd364r0007rgpocv0wgs71" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Colouredribbon" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/25/Colouredribbon/" class="article-date">
+  <time datetime="2017-12-25T07:19:13.000Z" itemprop="datePublished">2017-12-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/coding/">coding</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/25/Colouredribbon/">彩带</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>在闲逛之际，看见了一篇文章里有很多实例，且有源码，就star了。第一篇就是尤大大的首页彩带效果，以前也看过尤大的首页，虽然是比较炫酷，但没想研究。<br>既然有了源码，就来复制一份，自己琢磨琢磨。</p>
+</blockquote>
+<h5 id="展示"><a href="#展示" class="headerlink" title="展示"></a>展示</h5><p>看效果的可以去看，点击这里<a href="http://evanyou.me/" target="_blank" rel="noopener">EVAN YOU 主页</a></p>
+<h5 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h5><p>这里有篇分析的贴子<a href="https://zhuanlan.zhihu.com/p/28257724" target="_blank" rel="noopener">绘制随机不规则三角彩条——小谈EvanYou个人主页的实现</a><br>下面是源码，拷贝过去就可以用的。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">canvas</span>&gt;</span><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.addEventListener(<span class="string">'touchmove'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span></span><br><span class="line">        e.preventDefault()</span><br><span class="line">    &#125;)</span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> c = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'canvas'</span>)[<span class="number">0</span>],</span></span><br><span class="line"><span class="actionscript">        x = c.getContext(<span class="string">'2d'</span>),</span></span><br><span class="line"><span class="javascript">        pr = <span class="built_in">window</span>.devicePixelRatio || <span class="number">1</span>,</span></span><br><span class="line"><span class="javascript">        w = <span class="built_in">window</span>.innerWidth,</span></span><br><span class="line"><span class="javascript">        h = <span class="built_in">window</span>.innerHeight,</span></span><br><span class="line">        f = 90,</span><br><span class="line">        q,</span><br><span class="line"><span class="javascript">        m = <span class="built_in">Math</span>,</span></span><br><span class="line">        r = 0,</span><br><span class="line">        u = m.PI*2,</span><br><span class="line">        v = m.cos,</span><br><span class="line">        z = m.random</span><br><span class="line">    c.width = w*pr</span><br><span class="line">    c.height = h*pr</span><br><span class="line">    x.scale(pr, pr)</span><br><span class="line">    x.globalAlpha = 0.6</span><br><span class="line"><span class="actionscript">    <span class="function"><span class="keyword">function</span> <span class="title">i</span><span class="params">()</span></span>&#123;</span></span><br><span class="line">        x.clearRect(0,0,w,h)</span><br><span class="line">        q=[&#123;x:0,y:h*.7+f&#125;,&#123;x:0,y:h*.7-f&#125;]</span><br><span class="line"><span class="actionscript">        <span class="keyword">while</span>(q[<span class="number">1</span>].x&lt;w+f) d(q[<span class="number">0</span>], q[<span class="number">1</span>])</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="actionscript">    <span class="function"><span class="keyword">function</span> <span class="title">d</span><span class="params">(i,j)</span></span>&#123;   </span></span><br><span class="line">        x.beginPath()</span><br><span class="line">        x.moveTo(i.x, i.y)</span><br><span class="line">        x.lineTo(j.x, j.y)</span><br><span class="line"><span class="actionscript">        <span class="keyword">var</span> k = j.x + (z()*<span class="number">2</span><span class="number">-0.25</span>)*f,</span></span><br><span class="line">            n = y(j.y)</span><br><span class="line">        x.lineTo(k, n)</span><br><span class="line">        x.closePath()</span><br><span class="line">        r-=u/-50</span><br><span class="line"><span class="actionscript">        x.fillStyle = <span class="string">'#'</span>+(v(r)*<span class="number">127</span>+<span class="number">128</span>&lt;&lt;<span class="number">16</span> | v(r+u/<span class="number">3</span>)*<span class="number">127</span>+<span class="number">128</span>&lt;&lt;<span class="number">8</span> | v(r+u/<span class="number">3</span>*<span class="number">2</span>)*<span class="number">127</span>+<span class="number">128</span>).toString(<span class="number">16</span>)</span></span><br><span class="line">        x.fill()</span><br><span class="line">        q[0] = q[1]</span><br><span class="line">        q[1] = &#123;x:k,y:n&#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="actionscript">    <span class="function"><span class="keyword">function</span> <span class="title">y</span><span class="params">(p)</span></span>&#123;</span></span><br><span class="line"><span class="actionscript">        <span class="keyword">var</span> t = p + (z()*<span class="number">2</span><span class="number">-1.1</span>)*f</span></span><br><span class="line"><span class="actionscript">        <span class="keyword">return</span> (t&gt;h||t&lt;<span class="number">0</span>) ? y(p) : t</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.onclick = i</span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.ontouchstart = i</span></span><br><span class="line">    i()</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/25/Colouredribbon/" data-id="ckakd36440000rgpo2dn55qsp" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-SXXFWorkbook_excel" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/21/SXXFWorkbook_excel/" class="article-date">
+  <time datetime="2017-12-21T07:19:13.000Z" itemprop="datePublished">2017-12-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/coding/">coding</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/21/SXXFWorkbook_excel/">简单的Excel导出下载</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>Java中操作excel的API一般是XSSFWorkbook，如果导出的数据过大会出现内容溢出的情况。而poi 3.8以上就出现了专门用于处理数据量过大的方法了。就是现在要说明的SXSSFWorkbook，看见前面加了一个S就晓得比以前那个要高级些。</p>
+</blockquote>
+<h5 id="maven-依赖"><a href="#maven-依赖" class="headerlink" title="maven 依赖"></a>maven 依赖</h5><p>首先是要下载这个API所需要的jar包，通过maven仓库就比较方便，只需要在pom.xml的依赖项中加入下面两个依赖即可</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.poi<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>poi<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.17<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.poi<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>poi-ooxml<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.17<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/2017/12/21/SXXFWorkbook_excel/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/21/SXXFWorkbook_excel/" data-id="ckakd364m0004rgpodid3azgn" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-cookieAndStorage" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/06/cookieAndStorage/" class="article-date">
+  <time datetime="2017-12-06T07:19:13.000Z" itemprop="datePublished">2017-12-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/coding/">coding</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/06/cookieAndStorage/">cookie和localStorage</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>浏览器上存储信息，一般用cookie，还有Storage。Storage包括localStorage和sessionStorage。</p>
+</blockquote>
+<h5 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h5><h6 id="获取当前域名下的所有cookie"><a href="#获取当前域名下的所有cookie" class="headerlink" title="获取当前域名下的所有cookie"></a>获取当前域名下的所有cookie</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allCookies &#x3D; document.cookie</span><br></pre></td></tr></table></figure>
+
+<p>取出来的cookies类似下面这种，键值对【key=value】以分号隔开</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">csrftoken&#x3D;PyeKQnHrP9coM73ZENye8fZIPTTXxDif; dwf_section_edit&#x3D;True; dwf_sg_task_completion&#x3D;False; _ga&#x3D;GA1.2.692413257.1510133300; _gid&#x3D;GA1.2.1049144690.1512451614</span><br></pre></td></tr></table></figure>
+
+<h6 id="获取单个cookie的值"><a href="#获取单个cookie的值" class="headerlink" title="获取单个cookie的值"></a>获取单个cookie的值</h6><p>上面的方法会取出所有的cookie键值对。这不是我们想要的，但里面也是有规律可找的。没错，就是通过正则表达式来获取需要的那个cookie值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假设cookie中保存两个cookie</span></span><br><span class="line"><span class="built_in">document</span>.cookie = <span class="string">"name1=Lufy"</span></span><br><span class="line"><span class="built_in">document</span>.cookie = <span class="string">"name2=zoro"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取name1的cookie</span></span><br><span class="line"><span class="keyword">var</span> myCookie = <span class="built_in">document</span>.cookie.replace(<span class="regexp">/(?:(?:^|.*;\s*)name1\s*\=\s*([^;]*).*$)|^.*$/</span>, <span class="string">"$1"</span>)</span><br></pre></td></tr></table></figure>
+
+<h6 id="设置cookie"><a href="#设置cookie" class="headerlink" title="设置cookie"></a>设置cookie</h6><p>上面也用到了最简单的设置，那种设置是默认的，而我们不希望那样的。</p>
+<p>参数：</p>
+<p><code>;path=path</code> ：（例如：’/‘，’mydir’）。默认【不写此参数】是当前文档位置的路径<br><code>;domain=domain</code>：域名,默认当前位置路径的域名<br><code>;max-age=max-age-in-seconds</code>：秒，如一年(60 * 60 * 24 * 365)<br><code>;expires=date-in-GMTString-format</code>：默认在结束会话时过期<br><code>;secure</code>：设置后cookie只通过https协议传输<br>需要说明的是cookie中不允许包含<code>逗号</code>，<code>分号</code>，<code>空格</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//最基本的设置cookie</span></span><br><span class="line"><span class="built_in">document</span>.cookie = <span class="string">"name3=nami"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//设置带有参数的cookie</span></span><br><span class="line"><span class="built_in">document</span>.cookie = <span class="string">"name4=sanji; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/"</span>;</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，<code>expires</code>的值可以通过Date.toUTCString()这个方法获取。<br>删除cookie只需要将它的过期时间(max-age)设置为0</p>
+<h5 id="Storage"><a href="#Storage" class="headerlink" title="Storage"></a>Storage</h5><blockquote>
+<p>localStorage和sessionStorage保存的数据都是页面的协议。localStorage保存的数据，关闭浏览器也不会丢失。sessionStorage则是关闭浏览器之后数据就丢失了。</p>
+</blockquote>
+<h6 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h6><p>对于cookie来说，操作localStorage相对简单了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置</span></span><br><span class="line">localStorage.setItem(<span class="string">'myToy'</span>,<span class="string">'car'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取</span></span><br><span class="line">localStorage.getItem(<span class="string">'myToy'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 移除一个已知的项</span></span><br><span class="line">localStorage.removeItem(<span class="string">'myToy'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 清空整个localStorage</span></span><br><span class="line">localStorage.clear();</span><br></pre></td></tr></table></figure>
+
+<p>sessionStorage的用法和localStorage一模一样。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/06/cookieAndStorage/" data-id="ckakd364g0001rgpo76a8hihm" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-bifeng" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/02/bifeng/" class="article-date">
+  <time datetime="2017-12-02T04:19:13.000Z" itemprop="datePublished">2017-12-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/bifeng/">bifeng</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/02/bifeng/">侠客行</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>作者：李白<br>赵客缦胡缨，吴钩霜雪明。<br>银鞍照白马，飒沓如流星。<br>十步杀一人，千里不留行。<br>事了拂衣去，深藏身与名。<br>闲过信陵饮，脱剑膝前横。<br>将炙啖朱亥，持觞劝侯嬴。<br>三杯吐然诺，五岳倒为轻。<br>眼花耳热后，意气素霓生。<br>救赵挥金槌，邯郸先震惊。<br>千秋二壮士，烜赫大梁城。<br>纵死侠骨香，不惭世上英。<br>谁能书阁下，白首太玄经。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/02/bifeng/" data-id="ckakd364k0003rgpo64wj8bfp" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-progressTop" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/29/progressTop/" class="article-date">
+  <time datetime="2017-11-29T13:19:13.000Z" itemprop="datePublished">2017-11-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/coding/">coding</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/29/progressTop/">顶部进度条</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>前言：在一些网站上看到一种效果，就是随着页面加载，顶部会有一条优雅的线条移动。当页面加载完成时，它也随之消失。</p>
+</blockquote>
+<h4 id="模拟进度条"><a href="#模拟进度条" class="headerlink" title="模拟进度条"></a>模拟进度条</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"progress-wrap"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"progress-inner"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 为了存在内容加载，引入一个百度的内容 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"http://baidu.com/"</span> <span class="attr">frameborder</span>=<span class="string">"0"</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.progress-wrap</span>&#123;</span><br><span class="line">   position: fixed;           //固定定位在顶部</span><br><span class="line">   <span class="selector-tag">top</span>: 0;</span><br><span class="line">   <span class="selector-tag">left</span>: 0;</span><br><span class="line">   <span class="selector-tag">width</span>: 100%;</span><br><span class="line">   height: 2px;               //进度条的高度    </span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.progress-inner</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">    width: 1%;                //默认为1%</span><br><span class="line">    <span class="selector-tag">height</span>: 2<span class="selector-tag">px</span>;</span><br><span class="line">    background-color: #31b3db; //进度条的颜色</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"> (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 获取进度条的元素</span></span><br><span class="line">    <span class="keyword">var</span> progressWrap = <span class="built_in">document</span>.querySelector(<span class="string">'.progress-wrap'</span>);</span><br><span class="line">    <span class="keyword">var</span> progressDiv = <span class="built_in">document</span>.querySelector(<span class="string">'.progress-inner'</span>);</span><br><span class="line">    <span class="comment">//初始化进度条为1%</span></span><br><span class="line">    <span class="keyword">var</span> progress = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">//随机返回最大和最小之前的一个数</span></span><br><span class="line">    <span class="keyword">var</span> random = <span class="function"><span class="keyword">function</span> (<span class="params">min, max</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (max - min + <span class="number">1</span>) + min);</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">var</span> onprogress = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">//获取一个随机时间</span></span><br><span class="line">        <span class="keyword">var</span> timeout = random(<span class="number">10</span>, <span class="number">30</span>);</span><br><span class="line">        setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">switch</span> (<span class="built_in">document</span>.readyState) &#123;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">"loading"</span>:</span><br><span class="line">                    <span class="comment">// The document is still loading.</span></span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">"interactive"</span>:</span><br><span class="line">                    progress += random(<span class="number">1</span>, <span class="number">5</span>);</span><br><span class="line">                    <span class="keyword">if</span> (progress &gt; <span class="number">98</span>) &#123;</span><br><span class="line">                        progress = <span class="number">98</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    progressDiv.style.width = progress + <span class="string">'%'</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">"complete"</span>:</span><br><span class="line">                    progressDiv.style.width = <span class="string">'100%'</span>;</span><br><span class="line">                    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                        progressWrap.style.display = <span class="string">'none'</span>;</span><br><span class="line">                    &#125;,<span class="number">130</span>);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            onprogress();</span><br><span class="line">        &#125;, timeout);</span><br><span class="line">    &#125;;</span><br><span class="line">    onprogress();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p>这样就能实现一个顶部进度条了。</p>
+        
+          <p class="article-more-link">
+            <a href="/2017/11/29/progressTop/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/29/progressTop/" data-id="ckakd364n0005rgpo1syd8v7j" class="article-share-link">Share</a>
       
       
     </footer>
@@ -156,7 +411,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/29/hexo-0/" data-id="ckajsdudw0001k8po0kb71zcr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/29/hexo-0/" data-id="ckakd365k000frgpoae355gdv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -176,7 +431,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/coding/">coding</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bifeng/">bifeng</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/coding/">coding</a></li></ul>
     </div>
   </div>
 
@@ -191,7 +446,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
     </div>
   </div>
 
@@ -204,11 +459,23 @@
       <ul>
         
           <li>
-            <a href="/2020/05/23/hello-world/">Hello World</a>
+            <a href="/2018/01/05/java_printFunctionStack/">java打印当前反腐的堆栈信息</a>
           </li>
         
           <li>
-            <a href="/2017/11/29/hexo-0/">HEXO简易指南</a>
+            <a href="/2017/12/25/Colouredribbon/">彩带</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/21/SXXFWorkbook_excel/">简单的Excel导出下载</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/06/cookieAndStorage/">cookie和localStorage</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/02/bifeng/">侠客行</a>
           </li>
         
       </ul>
